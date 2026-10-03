@@ -1,0 +1,12 @@
+Machine learning is a branch of artificial intelligence that enables
+computers to learn patterns from data.
+
+Natural language processing allows computers to understand and process
+human language.
+
+Vector databases are used to store and search high-dimensional vectors.
+They are commonly used in semantic search and retrieval augmented
+generation systems.
+
+Semantic search finds documents based on meaning rather than only
+matching exact keywords.
