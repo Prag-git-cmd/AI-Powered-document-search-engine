@@ -1,9 +1,9 @@
-from text_processor import clean_text, create_chunks
+from pypdf import PdfReader
 
 
 def load_text_file(file_path):
     """
-    Read a text file and return its content as a string.
+    Read a text file and return its content.
     """
 
     with open(file_path, "r", encoding="utf-8") as file:
@@ -12,29 +12,37 @@ def load_text_file(file_path):
     return text
 
 
-if __name__ == "__main__":
+def load_pdf_file(file_path):
+    """
+    Extract text from all pages of a PDF file.
+    """
 
-    file_path = "data/sample.txt"
+    reader = PdfReader(file_path)
 
-    document_text = load_text_file(file_path)
+    pages = []
 
-    print("Original document:")
-    print(document_text)
+    for page in reader.pages:
+        text = page.extract_text()
 
-    cleaned_text = clean_text(document_text)
+        if text:
+            pages.append(text)
 
-    print("\nCleaned document:")
-    print(cleaned_text)
+    return "\n".join(pages)
 
-    chunks = create_chunks(
-        cleaned_text,
-        chunk_size=30,
-        overlap=5
-    )
 
-    print("\nDocument chunks:")
-    print("--------------------------------")
+def load_document(file_path):
+    """
+    Load a document based on its file extension.
+    """
 
-    for i, chunk in enumerate(chunks):
-        print(f"\nChunk {i + 1}:")
-        print(chunk)
+    if file_path.lower().endswith(".txt"):
+        return load_text_file(file_path)
+
+    elif file_path.lower().endswith(".pdf"):
+        return load_pdf_file(file_path)
+
+    else:
+        raise ValueError(
+            "Unsupported file format. "
+            "Only .txt and .pdf files are supported."
+        )
