@@ -15,8 +15,7 @@ def clean_text(text):
     # Join words that were split by a hyphen at a line break.
     # Example:
     # "prom-\nising" -> "promising"
-    text = re.sub(r"(\w)-\s*\n\s*(\w)", r"\1\2", text)
-
+    text = re.sub(r"(\w)-\n(\w)", r"\1\2", text)
     # Replace remaining newlines with spaces.
     text = text.replace("\n", " ")
 
