@@ -1,27 +1,40 @@
+import re
+
+
 def clean_text(text):
     """
-    Clean unnecessary spaces and blank lines from the document.
+    Clean extracted document text.
+
+    Handles:
+    - Words broken across PDF line breaks
+    - Newline characters
+    - Multiple spaces
+    - Empty lines
     """
 
-    lines = text.splitlines()
+    # Join words that were split by a hyphen at a line break.
+    # Example:
+    # "prom-\nising" -> "promising"
+    text = re.sub(r"(\w)-\s*\n\s*(\w)", r"\1\2", text)
 
-    cleaned_lines = []
+    # Replace remaining newlines with spaces.
+    text = text.replace("\n", " ")
 
-    for line in lines:
-        line = line.strip()
+    # Remove multiple spaces.
+    text = re.sub(r"\s+", " ", text)
 
-        if line:
-            cleaned_lines.append(line)
-
-    return " ".join(cleaned_lines)
+    return text.strip()
 
 
 def create_chunks(text, chunk_size=100, overlap=20):
     """
-    Split text into overlapping chunks.
+    Split text into overlapping word-based chunks.
 
-    chunk_size: maximum number of words in one chunk.
-    overlap: number of words shared between consecutive chunks.
+    chunk_size:
+        Maximum number of words in a chunk.
+
+    overlap:
+        Number of words shared between consecutive chunks.
     """
 
     words = text.split()
