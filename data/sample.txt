@@ -1,12 +1,19 @@
-Machine learning is a branch of artificial intelligence that enables
-computers to learn patterns from data.
+Machine learning is a branch of artificial intelligence that enables computers to learn patterns from data. Machine learning algorithms can be supervised, unsupervised, or reinforcement learning based.
 
-Natural language processing allows computers to understand and process
-human language.
+Natural language processing allows computers to understand, process, and generate human language. NLP is used in applications such as chatbots, translation systems, sentiment analysis, and document classification.
 
-Vector databases are used to store and search high-dimensional vectors.
-They are commonly used in semantic search and retrieval augmented
-generation systems.
+Vector databases are specialized databases designed to store and search high-dimensional numerical vectors. They are commonly used in semantic search, recommendation systems, and retrieval augmented generation applications.
 
-Semantic search finds documents based on meaning rather than only
-matching exact keywords.
+Semantic search finds documents based on the meaning of the query rather than only matching exact keywords. It uses embedding models to represent text as numerical vectors and compares the similarity between query and document vectors.
+
+Retrieval augmented generation is a technique where relevant information is retrieved from a knowledge base and provided to a language model as context. This allows the language model to generate answers based on external documents.
+
+FAISS is a library developed for efficient similarity search of dense vectors. It can index large collections of embeddings and quickly retrieve vectors that are most similar to a query vector.
+
+Embeddings are numerical representations of text, images, or other data. Similar pieces of information tend to have similar representations in embedding space.
+
+Python is a popular programming language for artificial intelligence, machine learning, data processing, and web development. It provides libraries such as NumPy, PyTorch, TensorFlow, and Flask.
+
+Flask is a lightweight Python web framework. It can be used to expose machine learning models and search systems through REST APIs.
+
+Large language models can generate natural language responses based on the information provided in their context. In a retrieval augmented generation system, retrieved document chunks can be passed to the language model to generate a grounded answer.
