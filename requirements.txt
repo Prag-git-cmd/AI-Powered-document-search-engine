@@ -2,3 +2,4 @@ sentence-transformers
 numpy
 faiss-cpu
 pypdf
+rank-bm25
