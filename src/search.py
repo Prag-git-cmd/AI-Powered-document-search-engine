@@ -20,7 +20,7 @@ class DocumentSearchEngine:
         """
 
         # Step 1: Load document
-        text = load_text_file(file_path)
+        text = load_document(file_path)
 
         # Step 2: Clean text
         cleaned_text = clean_text(text)
