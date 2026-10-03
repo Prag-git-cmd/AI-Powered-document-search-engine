@@ -28,8 +28,8 @@ class DocumentSearchEngine:
         # Step 3: Create chunks
         chunks = create_chunks(
             cleaned_text,
-            chunk_size=50,
-            overlap=10
+            chunk_size=20,
+            overlap=5
         )
 
         # Step 4: Generate embeddings
