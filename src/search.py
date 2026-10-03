@@ -1,4 +1,4 @@
-from document_loader import load_text_file
+from document_loader import load_document
 from text_processor import clean_text, create_chunks
 from embeddings import EmbeddingModel
 from vector_store import VectorStore
