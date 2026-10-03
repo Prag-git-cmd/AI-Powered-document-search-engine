@@ -81,7 +81,7 @@ if __name__ == "__main__":
     search_engine = DocumentSearchEngine()
 
     search_engine.index_document(
-        "data/sample.txt"
+        "data/sample.pdf"
     )
 
     query = input(
