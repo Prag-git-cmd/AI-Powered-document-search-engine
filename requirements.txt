@@ -3,3 +3,4 @@ numpy
 faiss-cpu
 pypdf
 rank-bm25
+google-genai
