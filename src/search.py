@@ -14,6 +14,7 @@ class DocumentSearchEngine:
 
         self.embedding_model = EmbeddingModel()
         self.reranker = Reranker()
+        self.rag_generator = RAGGenerator()
 
         self.vector_store = None
         self.bm25_search = None
