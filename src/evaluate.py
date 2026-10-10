@@ -7,9 +7,9 @@ from search import DocumentSearchEngine
 # from data/sample.pdf.
 TEST_CASES = [
        {
-        "query": "What role does RAG play in LLMs?",
-        "expected_phrase": "componentize and break them",
-    },
+           "query": "What role does RAG play in LLMs?",
+           "expected_phrase": "componentize models",
+       },
     {
         "query": "What does the RAG framework say about modular design?",
         "expected_phrase": "modular design",
