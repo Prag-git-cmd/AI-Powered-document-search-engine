@@ -5,6 +5,7 @@ from embeddings import EmbeddingModel
 from vector_store import VectorStore
 from bm25_search import BM25Search
 from reranker import Reranker
+from rag import RAGGenerator
 
 
 class DocumentSearchEngine:
