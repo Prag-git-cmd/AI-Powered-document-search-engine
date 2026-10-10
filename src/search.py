@@ -91,96 +91,92 @@ class DocumentSearchEngine:
         )
 
     def hybrid_search(self, query, top_k=5):
-        """
-        Combine BM25 and FAISS results.
-        """
+    """
+    Combine BM25 and FAISS rankings using
+    Reciprocal Rank Fusion (RRF).
+    """
 
-        semantic_results = self.semantic_search(
-            query,
-            top_k
-        )
+    # Retrieve more candidates from both systems
+    # before performing the final ranking.
+    retrieval_k = 10
 
-        keyword_results = self.keyword_search(
-            query,
-            top_k
-        )
+    semantic_results = self.semantic_search(
+        query,
+        retrieval_k
+    )
 
-        # Store combined scores for each document.
-        combined_scores = {}
+    keyword_results = self.keyword_search(
+        query,
+        retrieval_k
+    )
 
-        # Add semantic scores.
-        for result in semantic_results:
+    # RRF constant.
+    k = 60
 
-            document = result["document"]
-            score = result["score"]
+    combined_scores = {}
 
+    # Process FAISS ranking.
+    for rank, result in enumerate(
+        semantic_results,
+        start=1
+    ):
+
+        document = result["document"]
+
+        rrf_score = 1 / (k + rank)
+
+        if document not in combined_scores:
             combined_scores[document] = {
-                "semantic_score": score,
+                "score": 0.0,
+                "semantic_score": result["score"],
                 "keyword_score": 0.0
             }
 
-        # Add BM25 scores.
-        for result in keyword_results:
+        combined_scores[document]["score"] += rrf_score
 
-            document = result["document"]
-            score = result["score"]
+    # Process BM25 ranking.
+    for rank, result in enumerate(
+        keyword_results,
+        start=1
+    ):
 
-            if document not in combined_scores:
+        document = result["document"]
 
-                combined_scores[document] = {
-                    "semantic_score": 0.0,
-                    "keyword_score": score
-                }
+        rrf_score = 1 / (k + rank)
 
-            else:
+        if document not in combined_scores:
+            combined_scores[document] = {
+                "score": 0.0,
+                "semantic_score": 0.0,
+                "keyword_score": result["score"]
+            }
 
-                combined_scores[document][
-                    "keyword_score"
-                ] = score
+        else:
+            combined_scores[document][
+                "keyword_score"
+            ] = result["score"]
 
-        # Find maximum BM25 score for normalization.
-        max_keyword_score = max(
-            [
-                result["keyword_score"]
-                for result in combined_scores.values()
-            ],
-            default=1.0
-        )
+        combined_scores[document]["score"] += rrf_score
 
-        if max_keyword_score == 0:
-            max_keyword_score = 1.0
+    # Convert dictionary into a list.
+    results = []
 
-        # Calculate final hybrid score.
-        results = []
+    for document, values in combined_scores.items():
 
-        for document, scores in combined_scores.items():
+        results.append({
+            "document": document,
+            "score": values["score"],
+            "semantic_score": values["semantic_score"],
+            "keyword_score": values["keyword_score"]
+        })
 
-            semantic_score = scores["semantic_score"]
+    # Highest RRF score first.
+    results.sort(
+        key=lambda x: x["score"],
+        reverse=True
+    )
 
-            keyword_score = (
-                scores["keyword_score"]
-                / max_keyword_score
-            )
-
-            final_score = (
-                0.5 * semantic_score
-                + 0.5 * keyword_score
-            )
-
-            results.append({
-                "document": document,
-                "semantic_score": semantic_score,
-                "keyword_score": keyword_score,
-                "score": final_score
-            })
-
-        # Sort by final hybrid score.
-        results.sort(
-            key=lambda x: x["score"],
-            reverse=True
-        )
-
-        return results[:top_k]
+    return results[:top_k]
 
 
 if __name__ == "__main__":
