@@ -22,9 +22,11 @@ TEST_CASES = [
 
 
 def is_relevant(document, expected_phrase):
-    """Check whether a retrieved passage contains its labeled phrase."""
-    return expected_phrase.casefold() in document.casefold()
+    """Check whether all expected words occur in a passage."""
+    document_words = set(document.casefold().split())
+    expected_words = set(expected_phrase.casefold().split())
 
+    return expected_words.issubset(document_words)
 
 def evaluate_search(search_engine, test_cases, k=5):
     total_recall = 0.0
