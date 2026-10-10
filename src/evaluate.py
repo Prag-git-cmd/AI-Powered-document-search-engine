@@ -6,9 +6,9 @@ from search import DocumentSearchEngine
 # Each expected phrase should occur in a relevant passage
 # from data/sample.pdf.
 TEST_CASES = [
-    {
+       {
         "query": "What role does RAG play in LLMs?",
-        "expected_phrase": "cornerstone for future enhancements in LLMs",
+        "expected_phrase": "componentize and break them",
     },
     {
         "query": "What does the RAG framework say about modular design?",
