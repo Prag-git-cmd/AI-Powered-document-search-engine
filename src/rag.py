@@ -15,8 +15,8 @@ class RAGGenerator:
             )
 
         self.client = genai.Client(api_key=api_key)
-        self.model = "gemini-3.8-flash"
-
+        self.model = "gemini-3.7-flash"
+        
     def generate_answer(self, query, context_chunks):
         """Generate an answer grounded in retrieved document chunks."""
 
