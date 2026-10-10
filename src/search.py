@@ -140,37 +140,54 @@ class DocumentSearchEngine:
         )
 
 
+
 if __name__ == "__main__":
     search_engine = DocumentSearchEngine()
 
+    # Step 1: Load and index the PDF document.
     search_engine.index_document("data/sample.pdf")
 
-    query = input("\nEnter your search query: ").strip()
+    # Step 2: Accept the user's question.
+    query = input("\nEnter your question: ").strip()
 
     if not query:
-        print("Please enter a non-empty search query.")
+        print("Please enter a valid question.")
     else:
-        # Stage 1: retrieve candidate chunks.
+        # Step 3: Retrieve candidates using hybrid search.
         candidates = search_engine.hybrid_search(
             query,
             top_k=10
         )
 
-        # Stage 2: rerank the candidates.
+        # Step 4: Rerank the retrieved passages.
         results = search_engine.rerank(
             query,
             candidates,
             top_k=5
         )
 
-        print("\nReranked Search Results")
-        print("=" * 60)
+        # Step 5: Display the best retrieved passages.
+        print("\n===== RERANKED SEARCH RESULTS =====")
 
         for i, result in enumerate(results, start=1):
-            print(f"\nResult {i}")
-            print(f"RRF Score: {result['score']:.6f}")
+            print(f"\nPassage {i}")
+            print(f"RRF score: {result['score']:.6f}")
             print(
-                f"Reranker Score: "
+                f"Reranker score: "
                 f"{result['rerank_score']:.4f}"
             )
-            print(f"Text: {result['document']}")
+            print(result["document"])
+
+        # Step 6: Generate a grounded answer with Gemini.
+        context_chunks = [
+            result["document"] for result in results
+        ]
+
+        answer = search_engine.rag_generator.generate_answer(
+            query,
+            context_chunks
+        )
+
+        # Step 7: Display the final answer.
+        print("\n===== GEMINI GENERATED ANSWER =====")
+        print(answer)
